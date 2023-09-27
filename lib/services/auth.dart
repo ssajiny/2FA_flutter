@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:logger/logger.dart';
-import 'package:otp_flutter/screens/home_screen.dart';
 import 'package:otp_flutter/services/database_service.dart';
 
 final logger = Logger();

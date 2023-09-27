@@ -29,6 +29,9 @@ class Account {
 
   String toJson() => json.encode(toMap());
 
+  factory Account.fromJson(String source) =>
+      Account.fromMap(json.decode(source));
+
   @override
   String toString() {
     return 'Account(id: $id, issuer: $issuer, secretKey: $secretKey)';

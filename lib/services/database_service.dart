@@ -1,5 +1,7 @@
 import 'package:otp_flutter/models/breed.dart';
 import 'package:otp_flutter/models/dog.dart';
+import 'package:otp_flutter/models/account.dart';
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -23,7 +25,7 @@ class DatabaseService {
     // Set the path to the database. Note: Using the `join` function from the
     // `path` package is best practice to ensure the path is correctly
     // constructed for each platform.
-    final path = join(databasePath, 'flutter_sqflite_database.db');
+    final path = join(databasePath, 'otp.db');
 
     // Set the version. This executes the onCreate function and provides a
     // path to perform database upgrades and downgrades.
@@ -45,6 +47,18 @@ class DatabaseService {
     // Run the CREATE {dogs} TABLE statement on the database.
     await db.execute(
       'CREATE TABLE dogs(id INTEGER PRIMARY KEY, name TEXT, age INTEGER, color INTEGER, breedId INTEGER, FOREIGN KEY (breedId) REFERENCES breeds(id) ON DELETE SET NULL)',
+    );
+    await db.execute(
+      'CREATE TABLE accounts(id INTEGER PRIMARY KEY AUTOINCREMENT, issuer TEXT, secretKey TEXT)',
+    );
+  }
+
+  Future<void> insertAccount(Account account) async {
+    final db = await _databaseService.database;
+    await db.insert(
+      'accounts',
+      account.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
@@ -92,6 +106,19 @@ class DatabaseService {
     return Breed.fromMap(maps[0]);
   }
 
+  Future<List<Account>> accounts() async {
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps = await db.query('accounts');
+    return List.generate(maps.length, (index) => Account.fromMap(maps[index]));
+  }
+
+  Future<Account> account(int id) async {
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps =
+        await db.query('accounts', where: 'id = ?', whereArgs: [id]);
+    return Account.fromMap(maps[0]);
+  }
+
   Future<List<Dog>> dogs() async {
     final db = await _databaseService.database;
     final List<Map<String, dynamic>> maps = await db.query('dogs');
@@ -112,6 +139,12 @@ class DatabaseService {
       // Pass the Breed's id as a whereArg to prevent SQL injection.
       whereArgs: [breed.id],
     );
+  }
+
+  Future<void> updateAccount(Account account) async {
+    final db = await _databaseService.database;
+    await db.update('accounts', account.toMap(),
+        where: 'id = ?', whereArgs: [account.id]);
   }
 
   Future<void> updateDog(Dog dog) async {
@@ -137,5 +170,10 @@ class DatabaseService {
   Future<void> deleteDog(int id) async {
     final db = await _databaseService.database;
     await db.delete('dogs', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<void> deleteAccount(int id) async {
+    final db = await _databaseService.database;
+    await db.delete('accounts', where: 'id = ?', whereArgs: [id]);
   }
 }
