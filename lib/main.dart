@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:otp_flutter/services/auth.dart';
+import 'package:otp_flutter/pages/home_page.dart';
 
-void main() => runApp(const MaterialApp(
-      home: AuthCheck(),
-    ));
+void main() async {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
+    );
+  }
+}
