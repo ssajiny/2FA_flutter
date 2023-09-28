@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:otp_flutter/common_widgets/account_builder.dart';
 import 'package:otp_flutter/common_widgets/dog_builder.dart';
 import 'package:otp_flutter/common_widgets/breed_builder.dart';
+import 'package:otp_flutter/common_widgets/site_builder.dart';
 import 'package:otp_flutter/models/account.dart';
 import 'package:otp_flutter/models/breed.dart';
 import 'package:otp_flutter/models/dog.dart';
+import 'package:otp_flutter/models/site.dart';
 import 'package:otp_flutter/pages/breed_form_page.dart';
+import 'package:otp_flutter/pages/code_form_page.dart';
 import 'package:otp_flutter/pages/dog_form_page.dart';
 import 'package:otp_flutter/pages/qr_form_page.dart';
+import 'package:otp_flutter/pages/site_form_page.dart';
 import 'package:otp_flutter/services/database_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,15 +36,24 @@ class _HomePageState extends State<HomePage> {
     return await _databaseService.accounts();
   }
 
+  Future<List<Site>> _getSites() async {
+    return await _databaseService.sites();
+  }
+
   Future<void> _onDogDelete(Dog dog) async {
     await _databaseService.deleteDog(dog.id!);
+    setState(() {});
+  }
+
+  Future<void> _onAccountDelete(Account account) async {
+    await _databaseService.deleteAccount(account.id!);
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('My Authenticator'),
@@ -55,36 +68,29 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.symmetric(vertical: 16.0),
                 child: Text('Sites'),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.0),
-                child: Text('Accounts'),
-              ),
             ],
           ),
         ),
         body: TabBarView(
           children: [
-            DogBuilder(
-              future: _getDogs(),
+            AccountBuilder(
+              future: _getAccounts(),
               onEdit: (value) {
                 {
                   Navigator.of(context)
                       .push(
                         MaterialPageRoute(
-                          builder: (_) => DogFormPage(dog: value),
+                          builder: (_) => CodeFormPage(account: value),
                           fullscreenDialog: true,
                         ),
                       )
                       .then((_) => setState(() {}));
                 }
               },
-              onDelete: _onDogDelete,
+              onDelete: _onAccountDelete,
             ),
-            BreedBuilder(
-              future: _getBreeds(),
-            ),
-            AccountBuilder(
-              future: _getAccounts(),
+            SiteBuilder(
+              future: _getSites(),
             ),
           ],
         ),
@@ -96,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.of(context)
                       .push(
                         MaterialPageRoute(
-                          builder: (_) => BreedFormPage(),
+                          builder: (_) => CodeFormPage(),
                           fullscreenDialog: true,
                         ),
                       )
@@ -125,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.of(context)
                     .push(
                       MaterialPageRoute(
-                        builder: (_) => DogFormPage(),
+                        builder: (_) => SiteFormPage(),
                         fullscreenDialog: true,
                       ),
                     )

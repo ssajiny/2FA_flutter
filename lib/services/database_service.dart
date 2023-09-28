@@ -1,6 +1,7 @@
 import 'package:otp_flutter/models/breed.dart';
 import 'package:otp_flutter/models/dog.dart';
 import 'package:otp_flutter/models/account.dart';
+import 'package:otp_flutter/models/site.dart';
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -25,7 +26,7 @@ class DatabaseService {
     // Set the path to the database. Note: Using the `join` function from the
     // `path` package is best practice to ensure the path is correctly
     // constructed for each platform.
-    final path = join(databasePath, 'otp.db');
+    final path = join(databasePath, 'otp3.db');
 
     // Set the version. This executes the onCreate function and provides a
     // path to perform database upgrades and downgrades.
@@ -49,7 +50,10 @@ class DatabaseService {
       'CREATE TABLE dogs(id INTEGER PRIMARY KEY, name TEXT, age INTEGER, color INTEGER, breedId INTEGER, FOREIGN KEY (breedId) REFERENCES breeds(id) ON DELETE SET NULL)',
     );
     await db.execute(
-      'CREATE TABLE accounts(id INTEGER PRIMARY KEY AUTOINCREMENT, issuer TEXT, secretKey TEXT)',
+      'CREATE TABLE accounts(id INTEGER PRIMARY KEY AUTOINCREMENT, siteId INTEGER, color INTEGER, secretKey TEXT, FOREIGN KEY (siteId) REFERENCES sites(id) ON DELETE SET NULL)',
+    );
+    await db.execute(
+      'CREATE TABLE sites(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT)',
     );
   }
 
@@ -58,6 +62,15 @@ class DatabaseService {
     await db.insert(
       'accounts',
       account.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<void> insertSite(Site site) async {
+    final db = await _databaseService.database;
+    await db.insert(
+      'sites',
+      site.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
@@ -117,6 +130,19 @@ class DatabaseService {
     final List<Map<String, dynamic>> maps =
         await db.query('accounts', where: 'id = ?', whereArgs: [id]);
     return Account.fromMap(maps[0]);
+  }
+
+  Future<List<Site>> sites() async {
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps = await db.query('sites');
+    return List.generate(maps.length, (index) => Site.fromMap(maps[index]));
+  }
+
+  Future<Site> site(int id) async {
+    final db = await _databaseService.database;
+    final List<Map<String, dynamic>> maps =
+        await db.query('sites', where: 'id = ?', whereArgs: [id]);
+    return Site.fromMap(maps[0]);
   }
 
   Future<List<Dog>> dogs() async {

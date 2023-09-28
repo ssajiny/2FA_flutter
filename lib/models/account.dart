@@ -1,20 +1,24 @@
 import 'dart:convert';
+import 'package:flutter/widgets.dart';
 
 class Account {
   final int? id;
-  final String issuer;
+  final int siteId;
+  final Color color;
   final String secretKey;
 
   Account({
     this.id,
-    required this.issuer,
+    required this.siteId,
+    required this.color,
     required this.secretKey,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'issuer': issuer,
+      'siteId': siteId,
+      'color': color.value,
       'secretKey': secretKey,
     };
   }
@@ -22,7 +26,8 @@ class Account {
   factory Account.fromMap(Map<String, dynamic> map) {
     return Account(
       id: map['id']?.toInt() ?? 0,
-      issuer: map['issuer'] ?? '',
+      siteId: map['siteId'].toInt() ?? 0,
+      color: Color(map['color']),
       secretKey: map['secretKey'] ?? '',
     );
   }
@@ -34,6 +39,6 @@ class Account {
 
   @override
   String toString() {
-    return 'Account(id: $id, issuer: $issuer, secretKey: $secretKey)';
+    return 'Account(id: $id, siteId: $siteId, color: $color, secretKey: $secretKey)';
   }
 }
