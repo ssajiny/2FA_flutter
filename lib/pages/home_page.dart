@@ -31,6 +31,11 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+  Future<void> _onSiteDelete(Site site) async {
+    await _databaseService.deleteSite(site.id!);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -72,6 +77,7 @@ class _HomePageState extends State<HomePage> {
             ),
             SiteBuilder(
               future: _getSites(),
+              onDelete: _onSiteDelete,
             ),
           ],
         ),

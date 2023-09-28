@@ -36,6 +36,10 @@ class _CodeFormPageState extends State<CodeFormPage> {
     if (widget.account != null) {
       _secretController.text = widget.account!.secretKey;
       _selectedColor = _colors.indexOf(widget.account!.color);
+      if (widget.account != null) {
+        _selectedSite =
+            _sites.indexWhere((e) => e.id == widget.account!.siteId);
+      }
     }
   }
 
@@ -43,9 +47,6 @@ class _CodeFormPageState extends State<CodeFormPage> {
     final sites = await _databaseService.sites();
     _sites.clear();
     _sites.addAll(sites);
-    // if (widget.account != null) {
-    //   _selectedSite = _sites.indexWhere((e) => e.id == widget.account!.siteId);
-    // }
     return _sites;
   }
 
@@ -54,7 +55,6 @@ class _CodeFormPageState extends State<CodeFormPage> {
     final color = _colors[_selectedColor];
     final site = _sites[_selectedSite];
 
-    // Add save code here
     widget.account == null
         ? await _databaseService.insertAccount(
             Account(secretKey: secret, color: color, siteId: site.id),

@@ -5,8 +5,11 @@ class SiteBuilder extends StatelessWidget {
   const SiteBuilder({
     Key? key,
     required this.future,
+    required this.onDelete,
   }) : super(key: key);
+
   final Future<List<Site>> future;
+  final Function(Site) onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,7 @@ class SiteBuilder extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              height: 40.0,
+              height: 80.0,
               width: 40.0,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
@@ -69,6 +72,20 @@ class SiteBuilder extends StatelessWidget {
                   const SizedBox(height: 4.0),
                   Text(site.description),
                 ],
+              ),
+            ),
+            const SizedBox(width: 20.0),
+            GestureDetector(
+              onTap: () => onDelete(site),
+              child: Container(
+                height: 40.0,
+                width: 40.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey[200],
+                ),
+                alignment: Alignment.center,
+                child: Icon(Icons.delete, color: Colors.red[800]),
               ),
             ),
           ],

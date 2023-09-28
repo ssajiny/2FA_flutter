@@ -78,7 +78,11 @@ class DatabaseService {
     final db = await _databaseService.database;
     final List<Map<String, dynamic>> maps =
         await db.query('sites', where: 'id = ?', whereArgs: [id]);
-    return Site.fromMap(maps[0]);
+    if (maps?.isNotEmpty ?? false) {
+      return Site.fromMap(maps[0]);
+    } else {
+      return Site(name: 'No Site', description: '');
+    }
   }
 
   Future<void> updateAccount(Account account) async {
@@ -90,5 +94,10 @@ class DatabaseService {
   Future<void> deleteAccount(int id) async {
     final db = await _databaseService.database;
     await db.delete('accounts', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<void> deleteSite(int id) async {
+    final db = await _databaseService.database;
+    await db.delete('sites', where: 'id = ?', whereArgs: [id]);
   }
 }

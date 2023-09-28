@@ -26,7 +26,7 @@ class Account {
   factory Account.fromMap(Map<String, dynamic> map) {
     return Account(
       id: map['id']?.toInt() ?? 0,
-      siteId: map['siteId'].toInt() ?? 0,
+      siteId: map['siteId']?.toInt() ?? 0,
       color: Color(map['color']),
       secretKey: map['secretKey'] ?? '',
     );
