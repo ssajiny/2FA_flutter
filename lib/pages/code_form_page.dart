@@ -41,11 +41,11 @@ class _CodeFormPageState extends State<CodeFormPage> {
 
   Future<List<Site>> _getSites() async {
     final sites = await _databaseService.sites();
-    if (_sites.isEmpty) _sites.addAll(sites);
-    if (widget.account != null) {
-      _selectedSite = _sites.indexWhere((e) => e.id == widget.account!.siteId);
-    }
-    print('_sites: $sites');
+    _sites.clear();
+    _sites.addAll(sites);
+    // if (widget.account != null) {
+    //   _selectedSite = _sites.indexWhere((e) => e.id == widget.account!.siteId);
+    // }
     return _sites;
   }
 
@@ -57,14 +57,14 @@ class _CodeFormPageState extends State<CodeFormPage> {
     // Add save code here
     widget.account == null
         ? await _databaseService.insertAccount(
-            Account(secretKey: secret, color: color, siteId: site.id!),
+            Account(secretKey: secret, color: color, siteId: site.id),
           )
         : await _databaseService.updateAccount(
             Account(
               id: widget.account!.id,
               secretKey: secret,
               color: color,
-              siteId: site.id!,
+              siteId: site.id,
             ),
           );
 
@@ -104,12 +104,10 @@ class _CodeFormPageState extends State<CodeFormPage> {
               FutureBuilder<List<Site>>(
                 future: _getSites(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Text("Loading Sites...");
-                  }
-                  print('_snapshot from builder: ${snapshot.data}');
                   return SiteSelector(
-                    sites: _sites.map((e) => e.name).toList(),
+                    sites: _sites.map((e) {
+                      return e.name;
+                    }).toList(),
                     selectedIndex: _selectedSite,
                     onChanged: (value) {
                       setState(() {

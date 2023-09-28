@@ -6,7 +6,7 @@ class SiteFormPage extends StatefulWidget {
   const SiteFormPage({Key? key}) : super(key: key);
 
   @override
-  _SiteFormPage createState() => _SiteFormPage();
+  State<SiteFormPage> createState() => _SiteFormPage();
 }
 
 class _SiteFormPage extends State<SiteFormPage> {

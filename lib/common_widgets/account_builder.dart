@@ -15,8 +15,8 @@ class AccountBuilder extends StatelessWidget {
   final Function(Account) onDelete;
 
   Future<String> getSiteName(int id) async {
-    final DatabaseService _databaseService = DatabaseService();
-    final site = await _databaseService.site(id);
+    final DatabaseService databaseService = DatabaseService();
+    final site = await databaseService.site(id);
     return site.name;
   }
 
@@ -57,7 +57,7 @@ class AccountBuilder extends StatelessWidget {
                 color: Colors.grey[200],
               ),
               alignment: Alignment.center,
-              child: Icon(Icons.sailing_sharp, size: 18.0),
+              child: const Icon(Icons.sailing_sharp, size: 18.0),
             ),
             const SizedBox(width: 20.0),
             Expanded(
@@ -74,7 +74,7 @@ class AccountBuilder extends StatelessWidget {
                   ),
                   const SizedBox(height: 4.0),
                   FutureBuilder<String>(
-                    future: getSiteName(account.siteId),
+                    future: getSiteName(account.siteId ?? 0),
                     builder: (context, snapshot) {
                       return Text('Site: ${snapshot.data}');
                     },

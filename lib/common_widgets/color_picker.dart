@@ -16,15 +16,15 @@ class ColorPicker extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Select color',
           style: TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.w500,
           ),
         ),
-        SizedBox(height: 12.0),
-        Container(
+        const SizedBox(height: 12.0),
+        SizedBox(
           height: 40.0,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
@@ -46,11 +46,11 @@ class ColorPicker extends StatelessWidget {
                     color: colors[index],
                   ),
                   child: selectedIndex == index
-                      ? Icon(
+                      ? const Icon(
                           Icons.done,
                           color: Colors.tealAccent,
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                 ),
               );
             },

@@ -3,13 +3,13 @@ import 'package:flutter/widgets.dart';
 
 class Account {
   final int? id;
-  final int siteId;
+  final int? siteId;
   final Color color;
   final String secretKey;
 
   Account({
     this.id,
-    required this.siteId,
+    this.siteId,
     required this.color,
     required this.secretKey,
   });

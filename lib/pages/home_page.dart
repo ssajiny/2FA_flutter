@@ -12,7 +12,7 @@ class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
             tabs: [
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0),
-                child: Text('OTPs'),
+                child: Text('Accounts'),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.0),

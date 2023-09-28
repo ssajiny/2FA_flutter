@@ -24,25 +24,28 @@ class SiteSelector extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 12.0),
-        Container(
+        SizedBox(
           height: 40.0,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: sites.length,
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () => onChanged(index),
+                onTap: () {
+                  onChanged(index);
+                },
                 child: Container(
                   height: 40.0,
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   margin: const EdgeInsets.only(right: 12.0),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.0),
                     border: Border.all(
                       width: 3.0,
-                      color:
-                          selectedIndex == index ? Colors.teal : Colors.black,
+                      color: selectedIndex == index
+                          ? Colors.teal
+                          : Colors.transparent,
                     ),
                   ),
                   child: Text(sites[index]),
