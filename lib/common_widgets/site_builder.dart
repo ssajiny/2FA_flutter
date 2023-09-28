@@ -76,7 +76,33 @@ class SiteBuilder extends StatelessWidget {
             ),
             const SizedBox(width: 20.0),
             GestureDetector(
-              onTap: () => onDelete(site),
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Confirmation'),
+                      content: const Text(
+                          'Are you sure you want to delete this item?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            onDelete(site);
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Yes'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('No'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
               child: Container(
                 height: 40.0,
                 width: 40.0,
