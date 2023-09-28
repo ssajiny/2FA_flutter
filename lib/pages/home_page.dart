@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:otp_flutter/common_widgets/account_builder.dart';
-import 'package:otp_flutter/common_widgets/dog_builder.dart';
-import 'package:otp_flutter/common_widgets/breed_builder.dart';
 import 'package:otp_flutter/common_widgets/site_builder.dart';
 import 'package:otp_flutter/models/account.dart';
-import 'package:otp_flutter/models/breed.dart';
-import 'package:otp_flutter/models/dog.dart';
 import 'package:otp_flutter/models/site.dart';
-import 'package:otp_flutter/pages/breed_form_page.dart';
 import 'package:otp_flutter/pages/code_form_page.dart';
-import 'package:otp_flutter/pages/dog_form_page.dart';
 import 'package:otp_flutter/pages/qr_form_page.dart';
 import 'package:otp_flutter/pages/site_form_page.dart';
 import 'package:otp_flutter/services/database_service.dart';
@@ -24,25 +18,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final DatabaseService _databaseService = DatabaseService();
 
-  Future<List<Dog>> _getDogs() async {
-    return await _databaseService.dogs();
-  }
-
-  Future<List<Breed>> _getBreeds() async {
-    return await _databaseService.breeds();
-  }
-
   Future<List<Account>> _getAccounts() async {
     return await _databaseService.accounts();
   }
 
   Future<List<Site>> _getSites() async {
     return await _databaseService.sites();
-  }
-
-  Future<void> _onDogDelete(Dog dog) async {
-    await _databaseService.deleteDog(dog.id!);
-    setState(() {});
   }
 
   Future<void> _onAccountDelete(Account account) async {
@@ -102,7 +83,7 @@ class _HomePageState extends State<HomePage> {
                   Navigator.of(context)
                       .push(
                         MaterialPageRoute(
-                          builder: (_) => CodeFormPage(),
+                          builder: (_) => const CodeFormPage(),
                           fullscreenDialog: true,
                         ),
                       )
@@ -131,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.of(context)
                     .push(
                       MaterialPageRoute(
-                        builder: (_) => SiteFormPage(),
+                        builder: (_) => const SiteFormPage(),
                         fullscreenDialog: true,
                       ),
                     )

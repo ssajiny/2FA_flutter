@@ -45,6 +45,7 @@ class _CodeFormPageState extends State<CodeFormPage> {
     if (widget.account != null) {
       _selectedSite = _sites.indexWhere((e) => e.id == widget.account!.siteId);
     }
+    print('_sites: $sites');
     return _sites;
   }
 
@@ -60,6 +61,7 @@ class _CodeFormPageState extends State<CodeFormPage> {
           )
         : await _databaseService.updateAccount(
             Account(
+              id: widget.account!.id,
               secretKey: secret,
               color: color,
               siteId: site.id!,
@@ -105,6 +107,7 @@ class _CodeFormPageState extends State<CodeFormPage> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Text("Loading Sites...");
                   }
+                  print('_snapshot from builder: ${snapshot.data}');
                   return SiteSelector(
                     sites: _sites.map((e) => e.name).toList(),
                     selectedIndex: _selectedSite,

@@ -50,14 +50,14 @@ class AccountBuilder extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              height: 40.0,
+              height: 80.0,
               width: 40.0,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.grey[200],
               ),
               alignment: Alignment.center,
-              // child: FaIcon(FontAwesomeIcons.dog, size: 18.0),
+              child: Icon(Icons.sailing_sharp, size: 18.0),
             ),
             const SizedBox(width: 20.0),
             Expanded(
@@ -66,9 +66,10 @@ class AccountBuilder extends StatelessWidget {
                 children: [
                   Text(
                     account.secretKey,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 18.0,
                       fontWeight: FontWeight.w500,
+                      color: account.color,
                     ),
                   ),
                   const SizedBox(height: 4.0),
@@ -79,22 +80,6 @@ class AccountBuilder extends StatelessWidget {
                     },
                   ),
                   const SizedBox(height: 4.0),
-                  Row(
-                    children: [
-                      Container(
-                        height: 15.0,
-                        width: 15.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4.0),
-                          color: account.color,
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 1.5,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),

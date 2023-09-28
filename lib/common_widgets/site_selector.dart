@@ -16,14 +16,14 @@ class SiteSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Select site',
           style: TextStyle(
             fontSize: 16.0,
             fontWeight: FontWeight.w500,
           ),
         ),
-        SizedBox(height: 12.0),
+        const SizedBox(height: 12.0),
         Container(
           height: 40.0,
           child: ListView.builder(
