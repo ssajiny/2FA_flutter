@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:otp_flutter/models/account.dart';
 import 'package:otp_flutter/services/database_service.dart';
 
-class AccountBuilder extends StatelessWidget {
+class AccountBuilder extends StatefulWidget {
   const AccountBuilder({
     Key? key,
     required this.future,
@@ -14,16 +16,45 @@ class AccountBuilder extends StatelessWidget {
   final Function(Account) onEdit;
   final Function(Account) onDelete;
 
+  @override
+  State<AccountBuilder> createState() => _AccountBuilderState();
+}
+
+class _AccountBuilderState extends State<AccountBuilder> {
+  int seconds = 0;
+  late Timer _timer;
+
   Future<String> getSiteName(int id) async {
     final DatabaseService databaseService = DatabaseService();
     final site = await databaseService.site(id);
     return site.name;
   }
 
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        int _seconds = DateTime.now().second;
+        seconds = 30 - ((_seconds + 10) % 30);
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Account>>(
-      future: future,
+      future: widget.future,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -57,7 +88,7 @@ class AccountBuilder extends StatelessWidget {
                 color: Colors.grey[200],
               ),
               alignment: Alignment.center,
-              child: const Icon(Icons.sailing_sharp, size: 18.0),
+              child: Text('$seconds'),
             ),
             const SizedBox(width: 20.0),
             Expanded(
@@ -85,7 +116,7 @@ class AccountBuilder extends StatelessWidget {
             ),
             const SizedBox(width: 20.0),
             GestureDetector(
-              onTap: () => onEdit(account),
+              onTap: () => widget.onEdit(account),
               child: Container(
                 height: 40.0,
                 width: 40.0,
@@ -111,7 +142,7 @@ class AccountBuilder extends StatelessWidget {
                       actions: [
                         TextButton(
                           onPressed: () {
-                            onDelete(account);
+                            widget.onDelete(account);
                             Navigator.of(context).pop();
                           },
                           child: const Text('Yes'),
